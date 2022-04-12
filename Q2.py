@@ -1,7 +1,6 @@
 import copy
 import numpy as np
 import matplotlib.pyplot as plt
-import random
 
 
 def Euclidean_dist(v1, v2):
@@ -13,22 +12,28 @@ def obj_function(x: list):
 
 
 def goldSearch(func, a, b, tol):
-    R = (5**0.5 - 1) / 2
-    C = 1 - R
+    '''
+        f : object function
+        a : lower bound
+        b : upper bound
+        tol : tolerance
+    '''
+    golden_ratio = (5**0.5 - 1) / 2
+    C = 1 - golden_ratio
 
-    x1 = R * a + C * b
-    x2 = C * a + R * b
+    x1 = golden_ratio * a + C * b
+    x2 = C * a + golden_ratio * b
     y1 = func(x1)
     y2 = func(x2)
 
     while (b - a) > tol:
         if y1 > y2:
             a, x1, y1 = x1, x2, y2
-            x2 = C * a + R * b
+            x2 = C * a + golden_ratio * b
             y2 = func(x2)
         else:
             b, x2, y2 = x2, x1, y1
-            x1 = R * a + C * b
+            x1 = golden_ratio * a + C * b
             y1 = func(x1)
 
     if y1 < y2:
@@ -72,15 +77,10 @@ def cyclic(func, init_X, x_bound, tol):
     # print(min_x)
     # print([x[0] for x in min_x_list])
     # print([x[1] for x in min_x_list])
-    # print(func(min_x))
+    print(func(min_x))
     plt.xlabel('x1')
     plt.ylabel('x2')
     plt.plot([x[0] for x in min_x_list], [x[1] for x in min_x_list])
     plt.savefig(f'./result/cyclic_{len(min_x_list)}.png', format = "png")
     plt.clf()
     return {'y': func(min_x), 'X': min_x, 'x_list': min_x_list}
-
-
-if __name__ == "__main__":
-    result = cyclic(x_bound_list=[[-2, 2], [-2, 2]], tol=1e-4)
-    print(f"(x, y): {result['X']}, f(x, y): {result['y']}")

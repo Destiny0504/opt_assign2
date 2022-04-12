@@ -9,6 +9,13 @@ def obj_function(x, type : str = 'min'):
         return round(-(x**3 * math.exp(-x**2)), 8)
 
 def goldsearch(f, a, b, tol, type : str = 'min'):
+    '''
+        f : object function
+        a : lower bound
+        b : upper bound
+        tol : tolerance
+        type : find minimum or maximum
+    '''
     count = 0
     golden_ratio = (math.sqrt(5) - 1) / 2
     step = []
@@ -24,14 +31,12 @@ def goldsearch(f, a, b, tol, type : str = 'min'):
         if f(x1, type) > f(x2, type):
             value.append(f(x1, 'min'))
             step.append(count)
-            a = x1
-            x1 = x2
+            a, x1= x1, x2
             x2 = C * a + golden_ratio * b
         else:
             value.append(f(x2, 'min'))
             step.append(count)
-            b = x2
-            x2 = x1
+            b, x2 = x2, x1
             x1 = golden_ratio * a + C * b
 
     step.append(count + 1)
